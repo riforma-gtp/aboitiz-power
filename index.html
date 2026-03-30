@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GTP — AboitizPower Capability Overview</title>
+
+  <!--
+  ═══════════════════════════════════════════════════════════
+  FONTS — RIFORMA + RIFORMA MONO (Dinamo trial fonts)
+  ───────────────────────────────────────────────────────────
+  Place your font files in a /fonts/ folder alongside this
+  index.html. Adjust the filenames below to match exactly
+  what Dinamo named the trial files you have.
+
+  Expected structure:
+    fonts/
+      Riforma-Light.woff2          ← body text (300)
+      Riforma-LightItalic.woff2    ← body italic (300i)
+      Riforma-Regular.woff2        ← body text (400)
+      Riforma-Medium.woff2         ← headlines (500)
+      Riforma-MediumItalic.woff2   ← headline italic (500i)
+      RiformaMono-Light.woff2      ← captions / labels (300)
+      RiformaMono-Regular.woff2    ← captions / labels (400)
+
+  Typography roles:
+    RIFORMA regular (300/400)  → body paragraphs
+    RIFORMA medium (500)       → headlines, display numbers
+    RIFORMA MONO               → section labels, captions,
+                                  eyebrows, tags, nav, misc UI
+
+  The unicode-range below excludes characters that cause
+  rendering issues in trial cuts ( ; ' # @ ~ ) — those fall
+  back silently to the system font stack.
+  ═══════════════════════════════════════════════════════════
+  -->
+  <style>
+    /* ── RIFORMA — body & headlines ───────────────────────── */
+    @font-face {
+      font-family: 'Riforma';
+      src: url('fonts/Riforma-Light.woff2') format('woff2');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+      unicode-range:
+        U+0020-0022, U+0024-0026, U+0028-003A,
+        U+003C-003F, U+0041-007D,
+        U+00C0-024F;
+    }
+    @font-face {
+      font-family: 'Riforma';
+      src: url('fonts/Riforma-LightItalic.woff2') format('woff2');
+      font-weight: 300;
+      font-style: italic;
+      font-display: swap;
+      unicode-range:
+        U+0020-0022, U+0024-0026, U+0028-003A,
+        U+003C-003F, U+0041-007D,
+        U+00C0-024F;
+    }
+    @font-face {
+      font-family: 'Riforma';
+      src: url('fonts/Riforma-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+      unicode-range:
+        U+0020-0022, U+0024-0026, U+0028-003A,
+        U+003C-003F, U+0041-007D,
+        U+00C0-024F;
+    }
+    @font-face {
+      font-family: 'Riforma';
+      src: url('fonts/Riforma-Medium.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+      unicode-range:
+        U+0020-0022, U+0024-0026, U+0028-003A,
+        U+003C-003F, U+0041-007D,
+        U+00C0-024F;
+    }
+    @font-face {
+      font-family: 'Riforma';
+      src: url('fonts/Riforma-MediumItalic.woff2') format('woff2');
+      font-weight: 500;
+      font-style: italic;
+      font-display: swap;
+      unicode-range:
+        U+0020-0022, U+0024-0026, U+0028-003A,
+        U+003C-003F, U+0041-007D,
+        U+00C0-024F;
+    }
+
+    /* ── RIFORMA MONO — labels / captions / UI ─────────────── */
+    @font-face {
+      font-family: 'Riforma Mono';
+      src: url('fonts/RiformaMono-Light.woff2') format('woff2');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+      unicode-range:
+        U+0020-0022, U+0024-0026, U+0028-003A,
+        U+003C-003F, U+0041-007D,
+        U+00C0-024F;
+    }
+    @font-face {
+      font-family: 'Riforma Mono';
+      src: url('fonts/RiformaMono-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+      unicode-range:
+        U+0020-0022, U+0024-0026, U+0028-003A,
+        U+003C-003F, U+0041-007D,
+        U+00C0-024F;
+    }
+
+    /* ── RESET & TOKENS ────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Backgrounds */
+      --teal:   #778487;   /* brand teal — dark section bg  */
+      --teal2:  #6d7a7d;   /* deeper teal — .sd sections     */
+      --teal3:  #606d70;   /* deepest — footer               */
+      --cream:  #f6f3ee;   /* off-white                      */
+      --warm:   #E5DFDD;   /* beige (updated)                */
+      --white:  #ffffff;
+
+      /* Text */
+      --ink:    #2a3035;   /* dark text on light bg          */
+
+      /* Accent — dark sections */
+      --sage-lt: #c8d5d2;  /* light sage on teal bg          */
+      --sage-lt2:#b8c7c4;  /* slightly deeper variant        */
+
+      /* Accent — light sections */
+      --sage:   #a9b7b0;   /* sage green on cream/beige      */
+      --sage2:  #8fa39c;   /* deeper sage                    */
+
+      /* Alpha helpers */
+      --bdk:    rgba(255,255,255,0.72);
+      --blt:    rgba(42,48,53,0.72);
+      --rdk:    rgba(255,255,255,0.13);
+      --rlt:    rgba(42,48,53,0.1);
+
+      /* Typography
+         --rf   = Riforma (body & headlines, weight-driven)
+         --mono = Riforma Mono (labels, captions, UI, misc)   */
+      --rf:   'Riforma', system-ui, sans-serif;
+      --mono: 'Riforma Mono', ui-monospace, monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--rf);   /* Riforma regular — all body text */
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--ink);
+      background: var(--cream);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ────────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem; height: 58px;
+      background: rgba(96,109,112,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rdk);
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 0.78rem; font-weight: 400;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: #fff;
+    }
+    .nav-logo span { color: var(--sage-lt); margin: 0 0.35em; }
+    .nav-tag {
+      font-family: var(--mono);
+      font-size: 0.65rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(255,255,255,0.35);
+      font-weight: 300;
+    }
+
+    /* ── HERO ───────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh; background: var(--teal);
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 7rem 2.5rem 5rem;
+      position: relative;
+    }
+    .hero::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(to right, var(--sage-lt), transparent 60%);
+    }
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.68rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--sage-lt);
+      margin-bottom: 2rem; font-weight: 300;
+      animation: fadeUp 0.8s 0.1s both;
+    }
+    .hero-hl {
+      font-family: var(--rf);
+      font-size: clamp(4rem, 10vw, 8rem);
+      font-weight: 500; line-height: 0.95;
+      color: rgba(255,255,255,0.95);
+      margin-bottom: 3.5rem;
+      letter-spacing: -0.02em;
+      animation: fadeUp 0.8s 0.25s both;
+    }
+    .hero-hl em { font-style: italic; color: var(--sage-lt); }
+    .hero-meta {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1.5rem 3rem;
+      border-top: 1px solid var(--rdk);
+      padding-top: 2rem; max-width: 700px;
+      animation: fadeUp 0.8s 0.4s both;
+    }
+    .hml {
+      font-family: var(--mono);
+      font-size: 0.62rem; letter-spacing: 0.16em;
+      text-transform: uppercase; color: rgba(255,255,255,0.3);
+      margin-bottom: 0.2rem; font-weight: 300;
+    }
+    .hmv { font-size: 0.85rem; color: rgba(255,255,255,0.72); font-weight: 300; }
+    .hero-scroll {
+      font-family: var(--mono);
+      position: absolute; bottom: 2.5rem; right: 2.5rem;
+      font-size: 0.62rem; letter-spacing: 0.16em;
+      text-transform: uppercase; color: rgba(255,255,255,0.2);
+      writing-mode: vertical-rl;
+    }
+
+    /* ── SECTION SHELLS ─────────────────────────────────────── */
+    section { position: relative; }
+    .sd { background: var(--teal2); }
+    .sl { background: var(--cream); }
+    .sw { background: var(--warm); }
+    .si { background: var(--teal); }
+    .inner { max-width: 880px; margin: 0 auto; padding: 6.5rem 2.5rem; }
+
+    /* ── SECTION HEADINGS ───────────────────────────────────── */
+    .sn {
+      font-family: var(--mono);
+      font-size: 0.62rem; letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem; font-weight: 300;
+    }
+    .sd .sn, .si .sn { color: var(--sage-lt); }
+    .sl .sn, .sw .sn { color: var(--sage2); }
+
+    .st {
+      font-family: var(--rf);
+      font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+      font-weight: 500; font-style: italic;
+      line-height: 1.1; margin-bottom: 2rem;
+      letter-spacing: -0.01em;
+    }
+    .sd .st, .si .st { color: rgba(255,255,255,0.95); }
+    .sl .st, .sw .st { color: var(--ink); }
+
+    hr.rule { border: none; margin-bottom: 2.5rem; }
+    .sd hr.rule, .si hr.rule { border-top: 1px solid var(--rdk); }
+    .sl hr.rule, .sw hr.rule { border-top: 1px solid var(--rlt); }
+
+    .slead {
+      font-size: 1rem; font-weight: 300;
+      line-height: 1.8; margin-bottom: 3rem; max-width: 640px;
+    }
+    .sd .slead, .si .slead { color: rgba(255,255,255,0.7); }
+    .sl .slead, .sw .slead { color: rgba(42,48,53,0.65); }
+
+    /* ── INTRO BOX ──────────────────────────────────────────── */
+    .intro-box {
+      border-left: 2px solid var(--sage-lt2);
+      padding: 1.75rem 2rem;
+      background: rgba(200,213,210,0.08);
+      margin-bottom: 3rem;
+      display: flex; gap: 1.75rem; align-items: flex-start;
+    }
+    .intro-av {
+      flex-shrink: 0; width: 2.8rem; height: 2.8rem;
+      border-radius: 50%; background: var(--sage-lt);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--rf); font-size: 1.3rem;
+      font-weight: 500; color: var(--teal); margin-top: 0.1rem;
+    }
+    .intro-text p {
+      font-size: 0.92rem; font-weight: 300;
+      line-height: 1.8; color: rgba(255,255,255,0.75);
+      font-style: italic;
+    }
+    .intro-text cite {
+      display: block; margin-top: 0.7rem;
+      font-family: var(--mono);
+      font-size: 0.62rem; letter-spacing: 0.14em;
+      text-transform: uppercase; font-style: normal;
+      color: var(--sage-lt);
+    }
+
+    /* ── TWO COL ─────────────────────────────────────────────── */
+    .two-col {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2rem 3.5rem; margin-bottom: 3rem;
+    }
+    .two-col h4 {
+      font-family: var(--mono);
+      font-size: 0.62rem; letter-spacing: 0.16em;
+      text-transform: uppercase; margin-bottom: 0.45rem; font-weight: 400;
+    }
+    .sd .two-col h4 { color: var(--sage-lt); }
+    .sl .two-col h4, .sw .two-col h4 { color: var(--sage2); }
+    .two-col p { font-size: 0.88rem; font-weight: 300; line-height: 1.75; }
+    .sd .two-col p { color: rgba(255,255,255,0.62); }
+    .sl .two-col p, .sw .two-col p { color: rgba(42,48,53,0.62); }
+
+    /* ── SRI BLOCK ──────────────────────────────────────────── */
+    .sri-block {
+      margin-bottom: 3rem;
+      border: 1px solid rgba(200,213,210,0.22);
+      padding: 2rem 2.25rem;
+      background: rgba(200,213,210,0.06);
+    }
+    .sri-label {
+      font-family: var(--mono);
+      font-size: 0.62rem; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--sage-lt);
+      margin-bottom: 0.75rem; font-weight: 400;
+    }
+    .sri-body {
+      font-size: 0.88rem; font-weight: 300;
+      line-height: 1.78; color: rgba(255,255,255,0.65);
+    }
+    .sri-body a { color: var(--sage-lt); text-decoration: none; }
+
+    /* ── STATS ──────────────────────────────────────────────── */
+    .stat-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: rgba(119,132,135,0.25);
+      margin-bottom: 3rem;
+    }
+    .stat-card { padding: 2rem 1.5rem; }
+    .sd .stat-card { background: var(--teal2); }
+    .sl .stat-card { background: var(--cream); }
+    .sw .stat-card { background: var(--warm); }
+    .stat-n {
+      font-family: var(--rf);
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 500; line-height: 1;
+      margin-bottom: 0.9rem; color: var(--sage-lt);
+    }
+    .sl .stat-n, .sw .stat-n { color: var(--teal); }
+    .stat-lbl {
+      font-family: var(--mono);
+      font-size: 0.78rem; font-weight: 300; line-height: 1.55;
+    }
+    .sd .stat-lbl { color: rgba(255,255,255,0.5); }
+    .sl .stat-lbl, .sw .stat-lbl { color: rgba(42,48,53,0.54); }
+
+    /* ── PROJECTS ───────────────────────────────────────────── */
+    .proj-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: rgba(42,48,53,0.08);
+      margin-bottom: 3rem;
+    }
+    .proj-card {
+      padding: 1.75rem 1.5rem;
+      border-top: 2px solid rgba(42,48,53,0.12);
+    }
+    .sl .proj-card, .sw .proj-card { background: var(--white); }
+    .proj-card.hi { border-top-color: #c8820a; }
+    .pn {
+      font-family: var(--rf); font-size: 1.05rem;
+      font-weight: 500; color: var(--ink); margin-bottom: 0.2rem;
+    }
+    .ps {
+      font-family: var(--mono);
+      font-size: 0.75rem; font-weight: 300;
+      color: rgba(42,48,53,0.5); margin-bottom: 0.3rem;
+    }
+    .pt {
+      font-family: var(--mono);
+      font-size: 0.62rem; font-weight: 400;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--sage2);
+    }
+    .proj-card.hi .pt { color: #c8820a; }
+
+    /* ── FUNCTION GRID ──────────────────────────────────────── */
+    .fn-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: rgba(119,132,135,0.2);
+      margin-bottom: 3rem;
+    }
+    .fn-card { background: var(--teal); padding: 2rem 1.75rem; }
+    .fn-tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--sage-lt);
+      border: 1px solid rgba(200,213,210,0.28);
+      padding: 0.18rem 0.5rem; margin-bottom: 0.85rem; font-weight: 300;
+    }
+    .fn-title {
+      font-family: var(--rf); font-size: 1.2rem;
+      font-weight: 500; color: rgba(255,255,255,0.95); margin-bottom: 0.75rem;
+    }
+    .fn-list {
+      font-size: 0.8rem; font-weight: 300;
+      color: rgba(255,255,255,0.5); line-height: 1.95;
+    }
+    .fn-list span { display: block; }
+    .fn-list span::before { content: '— '; color: var(--sage-lt); }
+
+    /* ── GAP GRID ───────────────────────────────────────────── */
+    .gap-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: rgba(42,48,53,0.08);
+      margin-bottom: 3rem;
+    }
+    .gap-card { background: var(--white); padding: 2rem 1.75rem; border-top: 2px solid rgba(42,48,53,0.1); }
+    .gap-card.live { border-top-color: var(--teal); }
+    .gbadge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      font-weight: 400; padding: 0.15rem 0.45rem; margin-bottom: 0.75rem;
+    }
+    .gap-card.live .gbadge { background: rgba(119,132,135,0.1); color: var(--teal); }
+    .gap-card .gbadge { background: rgba(42,48,53,0.06); color: rgba(42,48,53,0.4); }
+    .gn {
+      font-family: var(--rf); font-size: 1.1rem;
+      font-weight: 500; color: var(--ink); margin-bottom: 0.2rem;
+    }
+    .ge {
+      font-family: var(--mono);
+      font-size: 0.68rem; font-weight: 400;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 0.55rem;
+    }
+    .gb {
+      font-size: 0.82rem; font-weight: 300;
+      color: rgba(42,48,53,0.62); line-height: 1.7; margin-bottom: 0.7rem;
+    }
+    .gp {
+      font-size: 0.78rem; font-weight: 300;
+      color: rgba(42,48,53,0.44); line-height: 1.65;
+      border-top: 1px solid rgba(42,48,53,0.07);
+      padding-top: 0.65rem; font-style: italic;
+    }
+
+    /* ── TRACK RECORD ───────────────────────────────────────── */
+    .rec-hdr {
+      background: var(--teal2); padding: 0.55rem 1.75rem; margin-bottom: 1px;
+    }
+    .rec-hdr-lbl {
+      font-family: var(--mono);
+      font-size: 0.6rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--sage-lt); font-weight: 300;
+    }
+    .rec-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: rgba(42,48,53,0.07);
+      margin-bottom: 3rem;
+    }
+    .rc {
+      background: var(--warm); padding: 1.85rem 1.75rem;
+      border-left: 2px solid var(--teal);
+    }
+    .rc.ph { background: #f0f4f3; border-left-color: var(--sage); }
+    .rt {
+      font-family: var(--rf); font-size: 1.1rem;
+      font-weight: 500; color: var(--ink); margin-bottom: 0.2rem;
+    }
+    .ro {
+      font-size: 0.68rem; font-weight: 400;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 0.45rem;
+    }
+    .rd {
+      font-size: 0.82rem; font-weight: 300;
+      color: rgba(42,48,53,0.56); line-height: 1.65;
+    }
+
+    /* ── SOURCE BOX ─────────────────────────────────────────── */
+    .src-box {
+      background: rgba(119,132,135,0.05);
+      border: 1px solid rgba(119,132,135,0.18);
+      padding: 1.85rem 2.25rem; margin-bottom: 3rem;
+    }
+    .src-lbl {
+      font-size: 0.62rem; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--sage2);
+      margin-bottom: 0.6rem; font-weight: 400;
+    }
+    .src-body {
+      font-size: 0.88rem; font-weight: 300;
+      color: rgba(42,48,53,0.66); line-height: 1.78;
+    }
+
+    /* ── STEPS ──────────────────────────────────────────────── */
+    .step-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: rgba(42,48,53,0.07);
+      margin-bottom: 3rem;
+    }
+    .step-card { background: var(--warm); padding: 2.2rem 2rem; }
+    .step-n {
+      font-family: var(--display); font-size: 3rem;
+      font-weight: 300; line-height: 1;
+      margin-bottom: 0.7rem; color: var(--teal);
+    }
+    .step-title {
+      font-size: 0.7rem; font-weight: 400;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink); margin-bottom: 0.7rem;
+    }
+    .step-body {
+      font-size: 0.85rem; font-weight: 300;
+      line-height: 1.72; color: rgba(42,48,53,0.58);
+    }
+
+    /* ── MODELS ─────────────────────────────────────────────── */
+    .model-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: rgba(119,132,135,0.2);
+      margin-bottom: 3rem;
+    }
+    .mc { background: var(--teal); padding: 2.2rem 1.75rem; }
+    .mn {
+      font-family: var(--display); font-size: 2.6rem;
+      font-weight: 300; color: var(--sage-lt); margin-bottom: 0.4rem;
+    }
+    .mt {
+      font-size: 0.7rem; font-weight: 400;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(255,255,255,0.95); margin-bottom: 0.25rem;
+    }
+    .mtag {
+      font-size: 0.68rem; font-weight: 300;
+      color: rgba(255,255,255,0.4); font-style: italic;
+      margin-bottom: 1.2rem;
+    }
+    .mc ul { list-style: none; }
+    .mc li {
+      font-size: 0.8rem; font-weight: 300;
+      color: rgba(255,255,255,0.55); line-height: 1.6;
+      padding: 0.3rem 0; border-bottom: 1px solid var(--rdk);
+      display: flex; gap: 0.5rem;
+    }
+    .mc li::before { content: '›'; color: var(--sage-lt); flex-shrink: 0; }
+
+    /* ── NEXT STEPS ─────────────────────────────────────────── */
+    .next-steps {
+      display: flex; flex-direction: column;
+      gap: 1.5rem; margin-bottom: 3.5rem;
+    }
+    .ns { display: flex; gap: 2rem; align-items: flex-start; }
+    .ns-n {
+      flex-shrink: 0; width: 2.8rem; height: 2.8rem;
+      background: var(--sage-lt); color: var(--teal);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--display); font-size: 1.4rem; font-weight: 300;
+    }
+    .ns-text {
+      padding-top: 0.35rem; font-size: 0.95rem;
+      font-weight: 300; color: rgba(255,255,255,0.72); line-height: 1.7;
+    }
+    .ns-text strong {
+      display: block; font-size: 0.62rem; font-weight: 400;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--sage-lt); margin-bottom: 0.3rem;
+    }
+
+    /* ── BLOCKQUOTE ─────────────────────────────────────────── */
+    blockquote {
+      border-left: 2px solid var(--sage-lt);
+      padding: 1.5rem 2rem; margin: 2.5rem 0;
+    }
+    .sd blockquote, .si blockquote { background: rgba(255,255,255,0.04); }
+    .sl blockquote, .sw blockquote { background: rgba(119,132,135,0.05); }
+    blockquote p {
+      font-family: var(--display); font-size: 1.22rem;
+      font-weight: 300; font-style: italic; line-height: 1.6;
+      margin-bottom: 0.65rem;
+    }
+    .sd blockquote p, .si blockquote p { color: rgba(255,255,255,0.85); }
+    .sl blockquote p, .sw blockquote p { color: var(--ink); }
+    .sl blockquote { border-left-color: var(--teal); }
+    .sw blockquote { border-left-color: var(--sage); }
+    blockquote cite {
+      font-size: 0.62rem; letter-spacing: 0.12em;
+      text-transform: uppercase; font-style: normal;
+      color: var(--sage-lt);
+    }
+    .sl blockquote cite, .sw blockquote cite { color: var(--teal); }
+
+    /* ── COMMITMENT ─────────────────────────────────────────── */
+    .commit {
+      border: 1px solid rgba(200,213,210,0.3);
+      padding: 1.75rem 2rem; margin-top: 3rem;
+    }
+    .commit-lbl {
+      font-size: 0.62rem; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--sage-lt);
+      margin-bottom: 0.6rem; font-weight: 400;
+    }
+    .commit p {
+      font-size: 0.92rem; font-weight: 300; font-style: italic;
+      line-height: 1.75; color: rgba(255,255,255,0.7);
+    }
+
+    /* ── CONTACT ────────────────────────────────────────────── */
+    .contact-block {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3rem; margin-top: 3rem; padding-top: 3rem;
+      border-top: 1px solid var(--rdk);
+    }
+    .c-lbl {
+      font-size: 0.62rem; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--sage-lt);
+      margin-bottom: 1.1rem; font-weight: 400;
+    }
+    .c-name {
+      font-family: var(--display); font-size: 1.6rem;
+      font-weight: 300; color: rgba(255,255,255,0.95); margin-bottom: 0.25rem;
+    }
+    .c-det {
+      font-size: 0.85rem; font-weight: 300;
+      color: rgba(255,255,255,0.52); line-height: 2.1;
+    }
+    .c-det a { color: var(--sage-lt); text-decoration: none; }
+    .c-note {
+      font-size: 0.85rem; font-weight: 300;
+      color: rgba(255,255,255,0.46); line-height: 1.75;
+    }
+
+    /* ── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      background: var(--teal3);
+      border-top: 1px solid var(--rdk);
+      padding: 2rem 2.5rem;
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    .fbrand {
+      font-size: 0.68rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(255,255,255,0.3);
+    }
+    .fbrand span { color: var(--sage-lt); }
+
+    /* ── ANIMATIONS ─────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .hero-meta, .two-col, .stat-row, .fn-grid, .gap-grid,
+      .rec-grid, .step-grid, .model-grid, .proj-grid,
+      .contact-block { grid-template-columns: 1fr; }
+      .intro-box { flex-direction: column; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">GTP <span>·</span> Green Transition Partners</div>
+  <div class="nav-tag">AboitizPower · April 2026</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">GTP — Green Transition Partners · Capability Overview</p>
+  <h1 class="hero-hl">TALENT<br>+ <em>PURPOSE.</em></h1>
+  <div class="hero-meta">
+    <div><div class="hml">Prepared for</div><div class="hmv">AboitizPower Talent Acquisition Team</div></div>
+    <div><div class="hml">Meeting</div><div class="hmv">April 15, 2026 · Ayala Triangle Gardens Tower 2, Makati</div></div>
+    <div><div class="hml">Focus</div><div class="hmv">Senior Leadership · Energy Transition · Philippines &amp; APAC</div></div>
+    <div><div class="hml">Prepared by</div><div class="hmv">Redmond (Red) O'Shea · <a href="/cdn-cgi/l/email-protection#fa889f9eba88939c9588979bd49f9b888e92" style="color:var(--sage-lt);text-decoration:none;"><span class="__cf_email__" data-cfemail="afddcacbefddc6c9c0ddc2ce81cacedddbc7">[email&#160;protected]</span></a></div></div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- 01 ABOUT GTP -->
+<section class="sd">
+  <div class="inner">
+    <p class="sn">01 — About GTP</p>
+    <h2 class="st">Imagined <em>differently.</em></h2>
+    <hr class="rule" />
+
+    <div class="intro-box">
+      <div class="intro-av">R</div>
+      <div class="intro-text">
+        <p>I have been working in the Philippine power market for the better part of two decades — placing senior leaders into EDC, MGen and others at a time when the country's energy transition was still taking shape. Watching what AboitizPower is now building — the breadth of the portfolio, the pace of the construction programme, the entry into LNG and offshore wind simultaneously — is genuinely exciting to me. I look forward to April 15, and to understanding where GTP might be a useful partner to your team.</p>
+        <cite>Redmond (Red) O'Shea · Founder, GTP</cite>
+      </div>
+    </div>
+
+    <p class="slead">GTP is a boutique executive search practice focused exclusively on the energy transition — connecting experienced leaders with the organisations building a more sustainable world. Every search sits at the intersection of people, purpose, and the energy sector.</p>
+
+    <div class="two-col">
+      <div>
+        <h4>What we are</h4>
+        <p>A boutique executive search practice established by Red O'Shea with 18+ years of experience placing senior and specialist leaders across energy transition, infrastructure and real assets — APAC, the Middle East and Europe.</p>
+      </div>
+      <div>
+        <h4>Our focus</h4>
+        <p>We work exclusively in energy transition and infrastructure — renewables, thermal, CCGT, LNG, hydro and storage. Every contact in our network is relevant to the energy sector.</p>
+      </div>
+      <div>
+        <h4>The Philippines</h4>
+        <p>We have a specific and documented history placing senior executives into Philippine power companies at SVP and Head-of-function level. We understand both the local market and the international talent pools it draws from.</p>
+      </div>
+      <div>
+        <h4>Base</h4>
+        <p>Bangkok-based, regularly in Manila, and active across Southeast Asia, the Philippines, Vietnam and India. We operate in the same timezone and understand the Philippine energy market from the inside.</p>
+      </div>
+    </div>
+
+    <div class="sri-block">
+      <div class="sri-label">Strategic partner — SRI Executive</div>
+      <p class="sri-body">GTP operates as a strategic regional partner of <a href="https://sri-executive.com" target="_blank">SRI Executive</a> — a global executive search and consulting firm with nearly three decades of experience serving world-leading social-impact organisations across more than 70 countries. SRI brings institutional depth, a global research infrastructure and a 99% placement success rate across its practice areas. For searches within the AboitizPower mandate, GTP draws on SRI's Manila-based research team for candidate identification, market mapping and reference support — combining local on-the-ground intelligence with GTP's sector-specific energy network and Red O'Shea's direct experience in the Philippine power market.</p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-n">18+</div><div class="stat-lbl">Years placing senior leaders in energy transition and infrastructure across APAC</div></div>
+      <div class="stat-card"><div class="stat-n">SVP+</div><div class="stat-lbl">Seniority of roles placed in the Philippine power market, including EDC and MGen</div></div>
+      <div class="stat-card"><div class="stat-n">100%</div><div class="stat-lbl">Energy sector focus — renewables, CCGT, LNG, hydro and storage</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 PIPELINE -->
+<section class="sw">
+  <div class="inner">
+    <p class="sn">02 — The AboitizPower Growth Agenda</p>
+    <h2 class="st">A portfolio <em>at scale.</em></h2>
+    <hr class="rule" />
+    <p class="slead">AboitizPower is executing one of the most ambitious energy programmes in Southeast Asia — a 9,200 MW portfolio by 2030 spanning six technology types and multiple active construction projects simultaneously. Each technology stream requires a distinct leadership profile.</p>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-n">9,200 MW</div><div class="stat-lbl">Total portfolio target by 2030 — 50% renewable, 50% thermal</div></div>
+      <div class="stat-card"><div class="stat-n">3,600 MW</div><div class="stat-lbl">Renewable energy expansion pipeline to 4,600 MW RE by 2030</div></div>
+      <div class="stat-card"><div class="stat-n">₱78.1B</div><div class="stat-lbl">2025 capital expenditure — 66% allocated to renewable energy projects</div></div>
+    </div>
+
+    <h3 style="font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--sage2);margin-bottom:1.25rem;font-weight:400;">Active projects — under construction or recently commissioned</h3>
+    <div class="proj-grid">
+      <div class="proj-card"><div class="pn">Olongapo Solar</div><div class="ps">212 MWp · Zambales</div><div class="pt">Solar</div></div>
+      <div class="proj-card"><div class="pn">San Manuel Solar</div><div class="ps">89 MWp · Pangasinan</div><div class="pt">Solar</div></div>
+      <div class="proj-card"><div class="pn">CamSur Wind</div><div class="ps">58.5 MW · Camarines Sur · BPI-financed</div><div class="pt">Wind — first onshore wind project</div></div>
+      <div class="proj-card"><div class="pn">Bay / Magat / Binga BESS</div><div class="ps">48 MW combined storage</div><div class="pt">Battery Storage</div></div>
+      <div class="proj-card"><div class="pn">CBK Hydro Complex</div><div class="ps">797 MW · Laguna — acquired February 2026</div><div class="pt">Hydro / Pumped Storage</div></div>
+      <div class="proj-card hi"><div class="pn">Chromite Gas Holdings (LNG)</div><div class="ps">40% stake · 2,400 MW CCGT + LNG terminal · Batangas</div><div class="pt">LNG / CCGT — Therma NatGas Power</div></div>
+    </div>
+
+    <blockquote>
+      <p>"As AboitizPower scales across solar, wind, hydro, storage and LNG simultaneously, each technology stream requires a distinct leadership profile — and several of those profiles are global rather than local searches."</p>
+      <cite>Red O'Shea · Founder, GTP</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- 03 ROLES WE DELIVER -->
+<section class="sd">
+  <div class="inner">
+    <p class="sn">03 — Roles We Have Delivered</p>
+    <h2 class="st">Across the full <em>value chain.</em></h2>
+    <hr class="rule" />
+    <p class="slead">GTP has delivered placements across the complete energy project and operations lifecycle — from techno-commercial and project development through engineering, project management, O&amp;M and senior leadership. Across renewables, CCGT, LNG and hydro.</p>
+
+    <div class="fn-grid">
+      <div class="fn-card">
+        <div class="fn-tag">Project Development</div>
+        <div class="fn-title">Development &amp; Commercial</div>
+        <div class="fn-list">
+          <span>Project Development Manager — greenfield to financial close</span>
+          <span>Head of Business Development — new market entry</span>
+          <span>Country Director — P&amp;L, government relations, JV management</span>
+          <span>Commercial Director — PPA origination, GEAP / WESM</span>
+          <span>Techno-Commercial Lead — technology evaluation &amp; project modelling</span>
+        </div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-tag">Project Management</div>
+        <div class="fn-title">Project Execution &amp; EPC</div>
+        <div class="fn-list">
+          <span>SVP / VP Project Execution — multi-technology</span>
+          <span>Project Director — FEED through to commissioning</span>
+          <span>EPC Interface Manager — contractor &amp; OEM oversight</span>
+          <span>Project Controls Manager — schedule, cost, risk</span>
+          <span>Construction Manager — on-site delivery leadership</span>
+        </div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-tag">Engineering</div>
+        <div class="fn-title">Technical &amp; Engineering</div>
+        <div class="fn-list">
+          <span>Project Engineering Manager — thermal and renewable</span>
+          <span>Civil &amp; Structural Engineering Lead</span>
+          <span>Electrical Engineering Lead — grid &amp; HV systems</span>
+          <span>BESS Integration Engineer</span>
+          <span>OEM / Equipment Specialist — turbines, generators</span>
+        </div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-tag">Asset Management &amp; O&amp;M</div>
+        <div class="fn-title">Operations &amp; Asset Performance</div>
+        <div class="fn-list">
+          <span>Head of Asset Management — multi-site portfolio</span>
+          <span>Plant Manager — hydro, CCGT, solar, wind</span>
+          <span>Reliability &amp; Performance Engineering Lead</span>
+          <span>O&amp;M Director — operations and maintenance strategy</span>
+          <span>Turnaround &amp; Recommissioning Leader</span>
+        </div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-tag">Gas &amp; LNG</div>
+        <div class="fn-title">CCGT, LNG &amp; Thermal</div>
+        <div class="fn-list">
+          <span>LNG Terminal Operations Lead</span>
+          <span>CCGT Technical Director — fleet management</span>
+          <span>Gas Commercial &amp; Origination Manager</span>
+          <span>LNG Supply Chain &amp; Procurement Lead</span>
+          <span>Thermal Project Engineering Manager — FEED &amp; EPC</span>
+        </div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-tag">Regulatory &amp; Stakeholder</div>
+        <div class="fn-title">Permits, Legal &amp; Community</div>
+        <div class="fn-list">
+          <span>Permitting &amp; Regulatory Affairs Manager</span>
+          <span>Environmental &amp; Social Lead — ESIA, IFC standards</span>
+          <span>Stakeholder Relations &amp; Right-of-Way Manager</span>
+          <span>Government Affairs Lead — DOE, ERC engagement</span>
+          <span>Legal Manager — energy regulatory</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="commit">
+      <div class="commit-lbl">Our standard</div>
+      <p>We present 3–5 calibrated candidates per search, not a stack of CVs. Every candidate has been personally spoken with and assessed before presentation. Quality is the only measure that matters.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 WHERE WE CAN HELP -->
+<section class="sl">
+  <div class="inner">
+    <p class="sn">04 — Where We Can Help</p>
+    <h2 class="st">Mapped to your <em>pipeline.</em></h2>
+    <hr class="rule" />
+    <p class="slead">Based on AboitizPower's announced projects and your current careers portal, the following areas are where GTP has direct experience sourcing the profiles you need. We have included a note on where these candidates typically come from internationally.</p>
+
+    <div class="gap-grid">
+      <div class="gap-card live">
+        <div class="gbadge live">Live open role</div>
+        <div class="gn">Project Development Manager</div>
+        <div class="ge">Manila-Oslo Renewable Enterprise (MORE) · Offshore Wind</div>
+        <div class="gb">Greenfield-to-feasibility leadership for AboitizPower's offshore wind joint venture. The spec requires multi-stakeholder management, budget oversight and regulatory interface across an early-stage project pipeline.</div>
+        <div class="gp">Candidate profile: Typically comes from independent offshore wind developers (CIP, Ørsted, RWE, BlueFloat) or from infrastructure advisory firms with offshore wind mandates in APAC. Often Australian, European or Taiwanese. Rarely found locally.</div>
+      </div>
+      <div class="gap-card live">
+        <div class="gbadge live">Live open role</div>
+        <div class="gn">Project Engineering Manager</div>
+        <div class="ge">Therma Luzon (PAG 4 &amp; 5) · Thermal / CCGT Expansion</div>
+        <div class="gb">The spec requires CCGT experience, LNG-to-power project development, OEM background and techno-commercial assessment capability across the Pagbilao thermal expansion.</div>
+        <div class="gp">Candidate profile: Typically from OEM backgrounds (Siemens Energy, GE Vernova, Mitsubishi Power) or from IPP engineering teams with CCGT FEED experience in Southeast Asia, Australia or the Middle East.</div>
+      </div>
+      <div class="gap-card live">
+        <div class="gbadge live">Live open role</div>
+        <div class="gn">Environment Lead</div>
+        <div class="ge">Therma Luzon · Environmental &amp; Regulatory Compliance</div>
+        <div class="gb">Environmental compliance and regulatory affairs leadership for thermal assets — DENR, ERC and multi-agency engagement alongside IFC performance standards.</div>
+        <div class="gp">Candidate profile: Strong local market at mid-level, but senior profiles with IFC standards exposure and thermal project experience require broader regional sourcing across SEA.</div>
+      </div>
+      <div class="gap-card">
+        <div class="gbadge">Anticipated need</div>
+        <div class="gn">LNG Terminal &amp; Gas Platform Leadership</div>
+        <div class="ge">Therma NatGas Power / Chromite Gas Holdings</div>
+        <div class="gb">AboitizPower's entry into LNG via Chromite Gas Holdings is the company's first foray into this technology. LNG terminal operations, commercial gas origination and CCGT fleet management profiles are globally scarce.</div>
+        <div class="gp">Candidate profile: Concentrated in Singapore, Malaysia, Australia and the Middle East. Very few combine LNG and Philippine regulatory experience — almost always an international hire with relocation support required.</div>
+      </div>
+      <div class="gap-card">
+        <div class="gbadge">Anticipated need</div>
+        <div class="gn">Pumped Storage Operations Leadership</div>
+        <div class="ge">AP Renewables / CBK HEPP Complex · Hydro</div>
+        <div class="gb">The CBK complex includes the 734 MW Kalayaan pumped-storage units — the first such facility in Southeast Asia. Operating and rehabilitating ageing pumped-storage assets is a niche global discipline.</div>
+        <div class="gp">Candidate profile: Concentrated in Europe (Alps, Scandinavia), Japan (J-Power, your consortium partner, is a useful calibration point) and Australia. Requires a dedicated international search with long lead time.</div>
+      </div>
+      <div class="gap-card">
+        <div class="gbadge">Anticipated need</div>
+        <div class="gn">Wind O&amp;M &amp; Offshore Development</div>
+        <div class="ge">Aboitiz Renewables · CamSur Wind + MORE Pipeline</div>
+        <div class="gb">CamSur is AboitizPower's first onshore wind project. As it approaches operations, Wind O&amp;M leadership will be required. The 3 GW offshore feasibility study via MORE will additionally need development and consenting profiles.</div>
+        <div class="gp">Candidate profile: Wind O&amp;M leaders from European or Australian operators; offshore development profiles from Denmark, UK, Taiwan or Singapore. Both pools are international — early planning is advisable given lead times.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 TRACK RECORD -->
+<section class="sw">
+  <div class="inner">
+    <p class="sn">05 — Selected Track Record</p>
+    <h2 class="st">Work that <em>speaks.</em></h2>
+    <hr class="rule" />
+    <p class="slead">A selection of completed placements across energy transition, infrastructure, CCGT, LNG and real assets. Specific candidate and client details available on request under NDA.</p>
+
+    <div class="rec-hdr"><div class="rec-hdr-lbl">Philippine placements — EDC &amp; MGen</div></div>
+    <div class="rec-grid" style="margin-bottom:3rem;">
+      <div class="rc ph"><div class="rt">SVP Project Development</div><div class="ro">Energy Development Corporation (EDC) · Philippines</div><div class="rd">Geothermal &amp; RE expansion mandate — international hire placed into Manila at SVP level, recruited from the global market</div></div>
+      <div class="rc ph"><div class="rt">SVP Project Execution</div><div class="ro">Energy Development Corporation (EDC) · Philippines</div><div class="rd">Bacman Rehabilitation Project Manager — technical turnaround leadership at SVP level in the Philippine power sector</div></div>
+      <div class="rc ph"><div class="rt">VP / Head of International Development</div><div class="ro">MGen / Meralco PowerGen · Philippines</div><div class="rd">Transition portfolio expansion — international hire relocated to Manila for a multi-market development mandate</div></div>
+      <div class="rc ph"><div class="rt">Project Engineering Manager — CCGT</div><div class="ro">IPP / Power Developer · Taiwan (Marubeni)</div><div class="rd">CCGT fleet recovery following turbine failure — EPC and OEM interface, lender engagement, techno-commercial leadership</div></div>
+    </div>
+
+    <div class="rec-grid">
+      <div class="rc"><div class="rt">Technical Director — Multi-Technology</div><div class="ro">Renewables &amp; Thermal Developer · Southeast Asia</div><div class="rd">CCGT, EfW, floating solar and BESS — technical leadership across a complex multi-technology operating portfolio</div></div>
+      <div class="rc"><div class="rt">Head of Asset Management, Asia Pacific</div><div class="ro">Renewables Developer · Singapore / Taiwan</div><div class="rd">Pan-APAC operating portfolio — solar, wind and storage across six markets, strategic asset management mandate</div></div>
+      <div class="rc"><div class="rt">Country Director — Renewable Energy</div><div class="ro">International Developer · Vietnam</div><div class="rd">Full market entry hire — P&amp;L ownership, government relations and JV management in a frontier energy market</div></div>
+      <div class="rc"><div class="rt">Permitting &amp; Regulatory Lead</div><div class="ro">Offshore Wind Developer · Southeast Asia</div><div class="rd">Government engagement, EIA coordination and grid connection workstreams for an early-stage offshore wind project</div></div>
+      <div class="rc"><div class="rt">Head of Development, APAC</div><div class="ro">ENOWA · Saudi Arabia / Asia Pacific</div><div class="rd">Renewable energy platform, Kingdom-to-region mandate — multi-market project development leadership</div></div>
+      <div class="rc"><div class="rt">VP Commercial, Green Hydrogen</div><div class="ro">NEOM Green Hydrogen Company · Saudi Arabia</div><div class="rd">World's largest green hydrogen project — SVP commercial leadership, gas and renewables interface, international search</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 HOW WE WORK -->
+<section class="sl">
+  <div class="inner">
+    <p class="sn">06 — How We Work</p>
+    <h2 class="st">Search, <em>structured.</em></h2>
+    <hr class="rule" />
+    <p class="slead">A structured process built for executive search — not volume recruitment. The principal leads every search personally, from brief to placement. There are no handoffs to junior staff at any stage.</p>
+
+    <div class="step-grid">
+      <div class="step-card"><div class="step-n">01</div><div class="step-title">Brief &amp; Market Map</div><div class="step-body">Detailed intake with the hiring manager and HR. We produce a written brief and a live talent market map before outreach begins — so you understand the depth and geography of the candidate pool before we enter it.</div></div>
+      <div class="step-card"><div class="step-n">02</div><div class="step-title">International Search</div><div class="step-body">Direct approach to passive candidates — not active job seekers. We reach them through 18+ years of direct relationships built across the energy transition community in APAC, Europe and the Middle East.</div></div>
+      <div class="step-card"><div class="step-n">03</div><div class="step-title">Structured Assessment</div><div class="step-body">Competency-based interviews, technical evaluation and cultural alignment assessment. We present 3–5 calibrated candidates with a written assessment report per search — not a stack of CVs.</div></div>
+      <div class="step-card"><div class="step-n">04</div><div class="step-title">Offer &amp; Transition</div><div class="step-body">We support offer negotiation, relocation logistics and counter-offer management. We remain engaged through onboarding and the probationary review — the placement is not complete at the offer letter.</div></div>
+    </div>
+
+    <div class="src-box">
+      <div class="src-lbl">How we reach candidates who are not looking</div>
+      <p class="src-body">The profiles AboitizPower needs for offshore wind, LNG, pumped storage and CCGT are not applying for jobs. They are employed, performing well, and rarely visible on job boards. We reach them through a combination of direct outreach backed by name recognition in the community, personal referrals from within active project networks — OEM engineering teams, hydro operators, LNG terminal operators, offshore wind developers — and through relationships built over 18 years of active placement in the energy transition sector. We also draw on SRI Executive's Manila-based research team for local market intelligence and candidate verification. The brief we produce at the start of every search includes a named long-list of target candidates before we make first contact.</p>
+    </div>
+
+    <blockquote>
+      <p>"Typical timelines: 6–10 weeks for regional searches. 10–14 weeks for international offshore wind, LNG, pumped storage or specialist thermal profiles."</p>
+      <cite>GTP Search Process</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- 07 ENGAGEMENT MODELS -->
+<section class="sd">
+  <div class="inner">
+    <p class="sn">07 — Engagement Models</p>
+    <h2 class="st">Built around <em>your needs.</em></h2>
+    <hr class="rule" />
+    <p class="slead">We offer three engagement structures. We recommend the right model for each search based on seniority, urgency and the nature of the candidate pool. Commercial terms are discussed directly and tailored to the mandate.</p>
+
+    <div class="model-grid">
+      <div class="mc">
+        <div class="mn">01</div>
+        <div class="mt">Retained Search</div>
+        <div class="mtag">For SVP / VP / Head-of-function</div>
+        <ul>
+          <li>Exclusive — GTP resource fully committed to the mandate</li>
+          <li>Three stages: brief → search → placement</li>
+          <li>Milestone-based fee structure across the search process</li>
+          <li>12-month replacement guarantee as standard</li>
+          <li>Full written assessment report for each shortlisted candidate</li>
+        </ul>
+      </div>
+      <div class="mc">
+        <div class="mn">02</div>
+        <div class="mt">Engaged Search</div>
+        <div class="mtag">For Director / Senior Manager level</div>
+        <ul>
+          <li>Engagement retainer to secure coverage and priority</li>
+          <li>Full international search process and written assessment</li>
+          <li>Success-based fee with retainer offset at placement</li>
+          <li>6-month replacement guarantee as standard</li>
+          <li>Suitable for multiple concurrent roles at this level</li>
+        </ul>
+      </div>
+      <div class="mc">
+        <div class="mn">03</div>
+        <div class="mt">Market Intelligence</div>
+        <div class="mtag">Talent mapping &amp; workforce planning</div>
+        <ul>
+          <li>Compensation benchmarking — regional and international</li>
+          <li>Talent market mapping — where specific profiles exist globally</li>
+          <li>Employer value proposition advice for international hiring</li>
+          <li>Retained on a project or annual advisory basis</li>
+          <li>Particularly relevant for offshore wind and LNG planning</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 NEXT STEPS -->
+<section class="si">
+  <div class="inner">
+    <p class="sn">08 — Next Steps</p>
+    <h2 class="st">Let's build <em>something.</em></h2>
+    <hr class="rule" />
+    <p class="slead">We have already identified three roles currently open on your careers portal that sit directly within our network — the Project Development Manager at Manila-Oslo, the Project Engineering Manager at Therma Luzon, and the Environment Lead. We look forward to walking through what the candidate market looks like for each, and to hearing from your team which searches are the highest priority right now.</p>
+
+    <div class="next-steps">
+      <div class="ns">
+        <div class="ns-n">1</div>
+        <div class="ns-text"><strong>Understand your priorities</strong>Walk us through your current open roles and upcoming pipeline. For each, we will share what the talent market looks like — candidate geography, typical backgrounds, realistic timelines — so you can make an informed decision about where external support adds the most value.</div>
+      </div>
+      <div class="ns">
+        <div class="ns-n">2</div>
+        <div class="ns-text"><strong>Talent market brief — at no cost</strong>For 2–3 priority roles, GTP will produce a short market brief showing the named candidate pool, where they are located, and what it typically takes to attract them to Manila. This lets you see the quality of our research before committing to anything.</div>
+      </div>
+      <div class="ns">
+        <div class="ns-n">3</div>
+        <div class="ns-text"><strong>Begin with one search</strong>Agree a single mandate — retained or engaged — to demonstrate process, timeline and quality. We move quickly once briefed: the long-list of target candidates is ready within the first week.</div>
+      </div>
+      <div class="ns">
+        <div class="ns-n">4</div>
+        <div class="ns-text"><strong>Build a long-term partnership</strong>As AboitizPower's portfolio grows and diversifies, our aim is to be a consistent and reliable resource for your team — particularly for the international and specialist searches that fall outside the domestic pool.</div>
+      </div>
+    </div>
+
+    <div class="contact-block">
+      <div>
+        <p class="c-lbl">Get in touch</p>
+        <p class="c-name">Redmond (Red) O'Shea</p>
+        <div class="c-det">
+          <a href="/cdn-cgi/l/email-protection#4b392e2f0b39222d2439262a652e2a393f23"><span class="__cf_email__" data-cfemail="99ebfcfdd9ebf0fff6ebf4f8b7fcf8ebedf1">[email&#160;protected]</span></a><br>
+          +66 6 1692 3119 (WhatsApp welcome)<br>
+          <a href="https://gtp.riforma.earth" target="_blank">gtp.riforma.earth</a><br>
+          <a href="https://sri-executive.com" target="_blank">sri-executive.com</a><br>
+          Bangkok, Thailand
+        </div>
+      </div>
+      <div>
+        <p class="c-lbl">Confidentiality</p>
+        <p class="c-note">This document is prepared exclusively for AboitizPower's Talent Acquisition team. All placement details are illustrative. Specific candidate names and client details are available on request under NDA.</p>
+        <p style="margin-top:1.25rem;font-size:0.62rem;letter-spacing:0.08em;color:rgba(255,255,255,0.22);">April 2026</p>
+      <
